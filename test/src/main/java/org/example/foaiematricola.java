@@ -1,0 +1,375 @@
+package org.example;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+
+public class foaiematricola {
+    public static void generare(student s) {
+        try {
+            String path = "/Users/florian/Desktop/Licenta/registru_personal.pdf";
+            Document document = new Document(PageSize.A3, 18, 18, 18, 18);//se poate face a3 daca se vrea pe formuatul ala
+            PdfWriter.getInstance(document, new FileOutputStream(path));
+            document.open();
+            float fntSize;
+            fntSize = 9f;
+            Font font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+            //font = FontFactory.getFont(FontFactory.TIMES_ROMAN, fntSize );
+            Paragraph para = new Paragraph(new Phrase("REGISTRUL DE EVIDENTA AL STUDENTULUI", font));
+            para.setAlignment(Element.ALIGN_CENTER);
+            document.add(para);
+            para = new Paragraph(new Phrase("Universitatea Politehnica din Timisoara (institutia de invatamant universitar)\nFacultartea de Automatica si Calculatoare\nDomeniul Informatica", font));
+            document.add(para);
+            para = new Paragraph(new Phrase("\n"));
+            document.add(para);
+            PdfPTable t = new PdfPTable(3);
+            PdfPCell c = new PdfPCell(new Phrase("Nr. matricol" , font));
+            t.addCell(c);
+            c = new PdfPCell(new Phrase("NUMELE SI PRENUMELE" , font));
+            t.addCell(c);
+            c = new PdfPCell(new Phrase("Născut în anul " + s.getAnNastere() + " luna " + s.getLunaNastere() + " în localitatea " + s.getLocalitate_nastere() + ", judetul/sectorul " + s.getJudet_nastere() + ". Prenumele parintilor " + s.getPrenumele_tatalui() + " (tatal) si " + s.getPrenumele_mamei() + "(mama). Domiciuliu stabil in localitatea: " + s.getLocalitate_domiciliu() + ", judetul " + s.getJudet_domiciuliu(), font));
+            c.setRowspan(2);
+            t.addCell(c);
+            c = new PdfPCell(new Phrase( s.getNr_matricol(), font));
+            c.setHorizontalAlignment(Element.ALIGN_CENTER);
+            t.addCell(c);
+            c = new PdfPCell(new Phrase(s.getNume() + "\n" + s.getPrenume() + "\nC.N.P: " + s.getCNP() , font));
+            t.addCell(c);
+            c = new PdfPCell(new Phrase("Admis în anul I pe baza concursului " + s.getTip_concurs() + " din sesiunea " + s.getSesiune() + ", anul " + s.getAn_admitere() + ", cu media " + s.getMedie_admitere() + "Admis in anul " + s.getAnstadmis() + " pe baza " + s.getBaza_admiterii() + " cu aprobarea " + s.getAprobarea() + " nr. " + s.getNr_aprobare() + " din data de " + s.getZiua_aprobare() + " luna " + s.getLuna_aprobare() + " anul " + s.getAnul_aprobare() + ".\nAlte acte prezentate " + s.getAlte_acte() + "\nPentru cetatenii straini: Inscrisx in anul x de studii xxxxx, cu aprobarea xxxxxxxxxxxx, nr xxxxxxx, din xxxxxxx\n\n", font));
+            c.setColspan(3);
+            t.addCell(c);
+            t.setWidthPercentage(100);
+            t.setWidths(new int[]{2, 10, 10});
+            document.add(t);
+            fntSize = 4f;
+            font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+            para = new Paragraph(new Phrase("\n" , font));
+            document.add(para);
+            fntSize = 9f;
+            font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+
+
+            for (int k = 1; k <= 3; k++) {
+                PdfPTable table = new PdfPTable(23);
+                table.setWidthPercentage(100);
+                c = new PdfPCell(new Phrase("Anul universitar: xxxxxxxxx\nAnult de studiu: x\nForma de invatamant: xxxxxxxxxxxxx", font));
+                c.setColspan(3);
+                table.addCell(c);
+                c = new PdfPCell(new Phrase("Programul de studii: xxxxxxxxxxxxxxxxxxxxx\nForma de finantare: xxxxxxxxxxxxxxx", font));
+                c.setColspan(8);
+                table.addCell(c);
+                c = new PdfPCell(new Phrase("    "));
+                c.setBorder(PdfPCell.NO_BORDER);
+                table.addCell(c);
+                c = new PdfPCell(new Phrase("Anul universitar: xxxxxxxxx\nAnult de studiu: x\nForma de invatamant: xxxxxxxxxxxxx", font));
+                c.setColspan(3);
+                table.addCell(c);
+                c = new PdfPCell(new Phrase("Programul de studii: xxxxxxxxxxxxxxxxxxxxx\nForma de finantare: xxxxxxxxxxxxxxx", font));
+                c.setColspan(8);
+                table.addCell(c);
+                table.setWidths(new int[]{2, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2});
+                PdfPCell coloana = new PdfPCell(new Phrase("Nr."));
+                coloana.setRowspan(3);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Disciplina", font));
+                coloana.setRowspan(3);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Total ore", font));
+                coloana.setColspan(2);
+                coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("NOTA", font));
+                coloana.setColspan(5);
+                coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Nr. credite", font));
+                coloana.setColspan(2);
+                coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(coloana);
+                c = new PdfPCell(new Phrase("    "));
+                c.setRowspan(3);
+                c.setBorder(PdfPCell.NO_BORDER);
+                table.addCell(c);
+                coloana = new PdfPCell(new Phrase("Nr.", font));
+                coloana.setRowspan(3);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Disciplina", font));
+                coloana.setRowspan(3);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Total ore", font));
+                coloana.setColspan(2);
+                coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("NOTA", font));
+                coloana.setColspan(5);
+                coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Nr. credite", font));
+                coloana.setColspan(2);
+                coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Curs", font));
+                coloana.setRowspan(2);
+                coloana.setRotation(90);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("  "));
+                coloana.setRowspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 1", font));
+                coloana.setColspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 2", font));
+                coloana.setColspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("P", font));
+                coloana.setRowspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 1", font));
+                coloana.setRowspan(2);
+                coloana.setRotation(90);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 2", font));
+                coloana.setRowspan(2);
+                coloana.setRotation(90);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Curs", font));
+                coloana.setRowspan(2);
+                coloana.setRotation(90);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("  ", font));
+                coloana.setRowspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 1", font));
+                coloana.setColspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 2", font));
+                coloana.setColspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("P", font));
+                coloana.setRowspan(2);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 1", font));
+                coloana.setRowspan(2);
+                coloana.setRotation(90);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("Sem. 2", font));
+                coloana.setRowspan(2);
+                coloana.setRotation(90);
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("C", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("E", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("C", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("E", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("C", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("E", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("C", font));
+                table.addCell(coloana);
+                coloana = new PdfPCell(new Phrase("E", font));
+                table.addCell(coloana);
+                table.setHeaderRows(4);
+                for (int i = 0; i < 16; i++) {//de facut si aici cu fonturi
+                    table.addCell((new Phrase(String.valueOf(i + 1) + ".", font)));
+                    table.addCell(new Phrase("Materiale, componente şi tehnologie electronică", font));
+                    table.addCell(new Phrase("3",font));
+                    table.addCell(new Phrase("4",font));
+                    table.addCell(new Phrase("5",font));
+                    table.addCell(new Phrase("6",font));
+                    table.addCell(new Phrase("7",font));
+                    table.addCell(new Phrase("8",font));
+                    table.addCell(new Phrase("9",font));
+                    table.addCell(new Phrase("10",font));
+                    table.addCell(new Phrase("11",font));
+                    c = new PdfPCell(new Phrase(" "));
+                    c.setBorder(PdfPCell.NO_BORDER);
+                    table.addCell(c);
+                    table.addCell((new Phrase(String.valueOf(i + 1) + ".", font)));
+                    table.addCell(new Phrase("Grafică şi dezvoltarea circuitelor electronice", font));
+                    table.addCell(new Phrase("15",font));
+                    table.addCell(new Phrase("16",font));
+                    table.addCell(new Phrase("17",font));
+                    table.addCell(new Phrase("18",font));
+                    table.addCell(new Phrase("19",font));
+                    table.addCell(new Phrase("20",font));
+                    table.addCell(new Phrase("21",font));
+                    table.addCell(new Phrase("22",font));
+                    table.addCell(new Phrase("23",font));
+                }
+                c = new PdfPCell(new Phrase("Situatia la finele anului de studii: xxxxxx Total credite: xx\n                                                                                                                               Media: xxx\n                                               DECAN,                 SECRETAR,\n   ", font));
+                c.setColspan(11);
+                table.addCell(c);
+                c = new PdfPCell(new Phrase("    "));
+                c.setBorder(PdfPCell.NO_BORDER);
+                table.addCell(c);
+                c = new PdfPCell(new Phrase("Situatia la finele anului de studii: xxxxxx Total credite: xx\n                                                                                                                               Media: xxx\n                                               DECAN,                 SECRETAR,\n   ", font));
+                c.setColspan(11);
+                table.addCell(c);
+                document.add(table);
+                //document.newPage();
+            }
+
+            PdfPTable table = new PdfPTable(15);
+            table.setWidthPercentage(100);
+            c = new PdfPCell(new Phrase("Anul universitar: xxxxxxxxx\nAnult de studiu: x\nForma de invatamant: xxxxxxxxxxxxx", font));
+            c.setColspan(3);
+            table.addCell(c);
+            c = new PdfPCell(new Phrase("Anul universitar: xxxxxxxxx\nAnult de studiu: x\nForma de invatamant: xxxxxxxxxxxxx", font));
+            c.setColspan(8);
+            table.addCell(c);
+            c = new PdfPCell(new Phrase("    "));
+            c.setBorder(PdfPCell.NO_BORDER);
+            table.addCell(c);
+            c = new PdfPCell(new Phrase("ACTE DE STUDI ELIBERATE TITULARULUI", font));
+            c.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c.setColspan(11);
+            table.addCell(c);
+
+            table.setWidths(new int[]{2, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 10, 10, 10});
+            PdfPCell coloana = new PdfPCell(new Phrase("Nr."));
+            coloana.setRowspan(3);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Disciplina", font));
+            coloana.setRowspan(3);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Total ore", font));
+            coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+            coloana.setColspan(2);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("NOTA", font));
+            coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+            coloana.setColspan(5);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Nr. credite", font));
+            coloana.setColspan(2);
+            coloana.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(coloana);
+            c = new PdfPCell(new Phrase("    "));
+            c.setRowspan(3);
+            c.setBorder(PdfPCell.NO_BORDER);
+            table.addCell(c);
+            coloana = new PdfPCell(new Phrase("Denumirea", font));
+            coloana.setRowspan(3);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Seria/Nr.", font));
+            coloana.setRowspan(3);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Data eliberarii", font));
+            coloana.setRowspan(3);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Curs", font));
+            coloana.setRowspan(2);
+            coloana.setRotation(90);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("  "));
+            coloana.setRowspan(2);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Sem. 1", font));
+            coloana.setColspan(2);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Sem. 2", font));
+            coloana.setColspan(2);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("P", font));
+            coloana.setRowspan(2);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Sem. 1", font));
+            coloana.setRowspan(2);
+            coloana.setRotation(90);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("Sem. 2", font));
+            coloana.setRowspan(2);
+            coloana.setRotation(90);
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("C", font));
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("E", font));
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("C", font));
+            table.addCell(coloana);
+            coloana = new PdfPCell(new Phrase("E", font));
+            table.addCell(coloana);
+            table.setHeaderRows(4);
+            for (int i = 0; i < 16; i++) {//de facut si aici cu fonturi
+                table.addCell((new Phrase( "1", font)));
+                table.addCell(new Phrase("2", font));
+                table.addCell(new Phrase("3",font));
+                table.addCell(new Phrase("4",font));
+                table.addCell(new Phrase("5",font));
+                table.addCell(new Phrase("6",font));
+                table.addCell(new Phrase("7",font));
+                table.addCell(new Phrase("8",font));
+                table.addCell(new Phrase("9",font));
+                table.addCell(new Phrase("10",font));
+                table.addCell(new Phrase("11",font));
+                c = new PdfPCell(new Phrase(" "));
+                c.setBorder(PdfPCell.NO_BORDER);
+                table.addCell(c);
+                table.addCell((new Phrase("13", font)));
+                table.addCell(new Phrase("14", font));
+                table.addCell(new Phrase("15",font));
+            }
+            c = new PdfPCell(new Phrase("Situatia la finele anului de studii: xxxxxx Total credite: xx\n                                                                                                                               Media: xxx\n                                               DECAN,                 SECRETAR,\n   ", font));
+            c.setColspan(11);
+            table.addCell(c);
+            c = new PdfPCell(new Phrase("    "));
+            c.setBorder(PdfPCell.NO_BORDER);
+            table.addCell(c);
+            c = new PdfPCell(new Phrase("      ", font));
+            c.setColspan(11);
+            table.addCell(c);
+            document.add(table);
+
+            //para = new Paragraph("\n");
+            //document.add(para);
+            table = new PdfPTable(2);
+            table.setWidthPercentage(100);
+            fntSize=5f;
+            font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+            c = new PdfPCell(new Phrase("MENTIUNI PRIVIND\n   SCOLARITATEA\nSI ALTE OBSERVATII", font));
+            c.setRotation(90);
+            table.addCell(c);
+            fntSize = 9f;
+            font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+            c = new PdfPCell(new Phrase(".  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  ", font));
+            table.addCell(c);
+            table.setWidths(new int[]{1, 30});
+            document.add(table);
+
+            fntSize = 12f;
+            font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+            para = new Paragraph("EXAMENUL DE FINALIZARE A STUDIILOR\n\n", font);
+            para.setAlignment(Element.ALIGN_CENTER);
+            document.add(para);
+
+            fntSize = 9f;
+            font = FontFactory.getFont("/Users/florian/Desktop/Licenta/Axiforma-Regular.ttf", BaseFont.IDENTITY_H, fntSize);//aici e scaparea am reusit sa fac diacritice
+            t = new PdfPTable(1);
+            c = new PdfPCell(new Phrase("S-a prezentat la examen in sesiunea..........................,obtinand urmatorele note / calificative:\n" + "Proba 1 - cunostinte fundamentale si de specialitate..........................\n" + "Proba 2 - lucrarea / proiectul, nota..........numar credite...............\n" + "Media examenului de finalizare a studiilor..............\n" + "Media generala de promovare a anilor de studii .................\n" + "Numarul total de credite in perioada anilor de studii............", font));
+            t.addCell(c);
+            c = new PdfPCell(new Phrase("A prezentat lucrarea / proiectul cu titlul:...............................\n" + "Conducator stintific..................................\n" + "Cotutelã.........................................",font));
+            t.setWidthPercentage(100);
+            t.addCell(c);
+            document.add(t);
+
+            para = new Paragraph(new Phrase("                                                                                                              DECAN,                                                                                              SECRETAR,",font));
+            document.add(para);
+
+
+            document.close();
+            System.out.println("\nRegistru personal generat cu succes.");
+
+        } catch (Exception e) {
+            System.out.println("Eroare!");
+        }
+    }
+
+}
